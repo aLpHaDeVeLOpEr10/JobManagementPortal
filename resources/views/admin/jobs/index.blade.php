@@ -19,17 +19,35 @@
                 <th class="p-4">Title</th>
                 <th class="p-4">Company</th>
                 <th class="p-4">Posted At</th>
+                <th class="p-4">Expiry Date</th>
+                <th class="p-4">Actions</th> {{-- 👈 Add Action column --}}
             </tr>
         </thead>
         <tbody>
             @foreach($jobs as $job)
                 <tr class="border-t">
-                    <td class="p-4">{{ $job->title }}</td>
+                    <td class="p-4">
+                        {{ $job->title }}
+                        @if($job->expiry_date && $job->expiry_date < now())
+                            <span class="ml-2 text-red-600 text-sm font-semibold">(Expired)</span>
+                        @endif
+                    </td>
                     <td class="p-4">{{ $job->company }}</td>
                     <td class="p-4">{{ $job->created_at->format('d M Y') }}</td>
+                    <td class="p-4">
+                        {{ $job->expiry_date ? \Carbon\Carbon::parse($job->expiry_date)->format('d M Y') : 'N/A' }}
+                    </td>
+                    <td class="p-4">
+                        <a href="{{ route('admin.jobs.edit', $job->id) }}"
+                           class="text-blue-500 hover:underline">
+                            Edit
+                        </a>
+                    </td>
                 </tr>
             @endforeach
         </tbody>
     </table>
+    
+    
 </div>
 @endsection

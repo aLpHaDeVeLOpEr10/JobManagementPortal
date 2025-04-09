@@ -18,7 +18,7 @@ class JobController extends Controller
                 return redirect()->route('admin.dashboard');
             }
         }
-        $jobs = Job::latest()->get();
+        $jobs = Job::active()->latest()->get(); // uses the scope we just defined
         return view('jobs.index', compact('jobs'));
     }
     public function create()
@@ -37,6 +37,7 @@ class JobController extends Controller
             'title' => 'required',
             'description' => 'required',
             'company' => 'required',
+            'expiry_date' => 'required|date',
         ]);
 
         Job::create($request->all());
@@ -56,6 +57,23 @@ class JobController extends Controller
         $applicants = $job->applications()->with('user')->get(); // Get applicants with user info
 
         return view('jobs.applicants', compact('job', 'applicants'));
+    }
+    public function edit(Job $job)
+    {
+        return view('admin.jobs.edit', compact('job'));
+    }
+
+    public function update(Request $request, Job $job)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'company' => 'required|string|max:255',
+        ]);
+
+        $job->update($request->only('title', 'description', 'company', 'expiry_date'));
+
+        return redirect()->route('admin.jobs.index')->with('success', 'Job updated successfully.');
     }
 
     public function sendEmailToApplicants($id)

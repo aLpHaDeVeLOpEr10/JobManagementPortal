@@ -12,11 +12,15 @@ class Job extends Model
         'title',
         'description',
         'company',
+        'expiry_date'
         // You can add other fields here if needed
     ];
+    public function scopeActive($query)
+    {
+        return $query->whereDate('expiry_date', '>=', now());
+    }
     public function applications()
-{
-    return $this->hasMany(JobApplication::class);
-}
-
+    {
+        return $this->hasMany(JobApplication::class);
+    }
 }

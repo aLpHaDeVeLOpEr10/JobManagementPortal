@@ -43,6 +43,8 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('/jobs', [AdminController::class, 'jobs'])->name('admin.jobs');
     Route::get('/applications', [AdminController::class, 'applications'])->name('admin.applications');
+    Route::get('/admin/jobs/{job}/edit', [JobController::class, 'edit'])->name('admin.jobs.edit');
+    Route::put('/admin/jobs/{job}', [JobController::class, 'update'])->name('admin.jobs.update');
     Route::get('/users', [AdminController::class, 'users'])->name('admin.users');
     Route::get('/jobs', [AdminJobController::class, 'index'])->name('admin.jobs.index');
     Route::get('/jobs/create', [AdminJobController::class, 'create'])->name('jobs.create');
