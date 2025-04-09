@@ -1,0 +1,35 @@
+@extends('layouts.app')
+
+@section('content')
+<div class="max-w-6xl mx-auto p-6">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold">All Jobs</h1>
+        <a href="{{ route('jobs.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Post New Job</a>
+    </div>
+
+    @if (session('success'))
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    <table class="w-full bg-white shadow rounded">
+        <thead>
+            <tr class="bg-gray-100 text-left text-sm font-semibold">
+                <th class="p-4">Title</th>
+                <th class="p-4">Company</th>
+                <th class="p-4">Posted At</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($jobs as $job)
+                <tr class="border-t">
+                    <td class="p-4">{{ $job->title }}</td>
+                    <td class="p-4">{{ $job->company }}</td>
+                    <td class="p-4">{{ $job->created_at->format('d M Y') }}</td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
+@endsection
