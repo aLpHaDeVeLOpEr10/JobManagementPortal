@@ -18,9 +18,11 @@
             <tr class="bg-gray-100 text-left text-sm font-semibold">
                 <th class="p-4">Title</th>
                 <th class="p-4">Company</th>
+                <th class="p-4">Location</th> {{-- New Location Column --}}
+                <th class="p-4">Type</th> {{-- New Job Type Column --}}
                 <th class="p-4">Posted At</th>
                 <th class="p-4">Expiry Date</th>
-                <th class="p-4">Actions</th> {{-- 👈 Add Action column --}}
+                <th class="p-4">Actions</th> {{-- Action Column --}}
             </tr>
         </thead>
         <tbody>
@@ -33,6 +35,8 @@
                         @endif
                     </td>
                     <td class="p-4">{{ $job->company }}</td>
+                    <td class="p-4">{{ $job->location }}</td> {{-- Display Job Location --}}
+                    <td class="p-4">{{ ucfirst($job->type) }}</td> {{-- Display Job Type --}}
                     <td class="p-4">{{ $job->created_at->format('d M Y') }}</td>
                     <td class="p-4">
                         {{ $job->expiry_date ? \Carbon\Carbon::parse($job->expiry_date)->format('d M Y') : 'N/A' }}
@@ -47,7 +51,6 @@
             @endforeach
         </tbody>
     </table>
-    
-    
+
 </div>
 @endsection

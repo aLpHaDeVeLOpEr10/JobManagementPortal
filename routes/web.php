@@ -49,5 +49,6 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->group(function () {
     Route::get('/jobs', [AdminJobController::class, 'index'])->name('admin.jobs.index');
     Route::get('/jobs/create', [AdminJobController::class, 'create'])->name('jobs.create');
     Route::post('/jobs', [AdminJobController::class, 'store'])->name('admin.jobs.store');
+    
 });
 require __DIR__ . '/auth.php';

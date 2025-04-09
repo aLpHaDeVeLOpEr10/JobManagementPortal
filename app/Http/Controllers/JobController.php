@@ -11,14 +11,34 @@ use Illuminate\Support\Facades\Mail;
 class JobController extends Controller
 {
 
-    public function dashboard()
+    public function dashboard(Request $request)
     {
-        if (auth()->check()) {
-            if (auth()->user()->role === 'admin') {
-                return redirect()->route('admin.dashboard');
-            }
+        // Redirect admins to the dashboard
+        if (auth()->check() && auth()->user()->role === 'admin') {
+            return redirect()->route('admin.dashboard');
         }
-        $jobs = Job::active()->latest()->get(); // uses the scope we just defined
+
+        // Initialize the query for active jobs
+        $query = Job::active(); // Assuming you have an active scope defined
+
+        // Search functionality
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                    ->orWhere('company', 'like', "%{$search}%")
+                    ->orWhere('location', 'like', "%{$search}%");
+            });
+        }
+
+        // Filter by job type
+        if ($request->filled('type')) {
+            $query->where('type', $request->input('type'));
+        }
+
+        // Get the filtered jobs with pagination
+        $jobs = $query->latest()->paginate(10);
+
         return view('jobs.index', compact('jobs'));
     }
     public function create()
@@ -71,7 +91,7 @@ class JobController extends Controller
             'company' => 'required|string|max:255',
         ]);
 
-        $job->update($request->only('title', 'description', 'company', 'expiry_date'));
+        $job->update($request->only('title', 'description', 'company', 'expiry_date', 'location', 'type'));
 
         return redirect()->route('admin.jobs.index')->with('success', 'Job updated successfully.');
     }

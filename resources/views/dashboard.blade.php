@@ -3,7 +3,7 @@
 @section('content')
 <div class="max-w-4xl mx-auto mt-8">
     <h1 class="text-2xl font-bold mb-6">My Applications</h1>
-
+  
     @if($applications->count())
         @foreach($applications as $application)
             <div class="bg-white shadow p-4 rounded mb-4">

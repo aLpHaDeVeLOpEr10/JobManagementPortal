@@ -1,66 +1,89 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+Job Management Portal
+Overview
+The Job Management Portal is a web application built with Laravel that allows users to browse job listings, apply for jobs, and manage their applications. Administrators can post new job listings, edit existing jobs, and manage applicants. This project implements a repository pattern for better organization and maintainability.
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Table of Contents
+Features
 
-## About Laravel
+Technology Stack
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Installation
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Configuration
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Usage
 
-## Learning Laravel
+Admin Routes
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+User Roles
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+Testing
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Contributing
 
-## Laravel Sponsors
+License
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+Features
+User Roles: Different roles for users and admins.
 
-### Premium Partners
+Job Listings: Users can view available jobs, filter them by type, and search by title, company, or location.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+Application Management: Users can apply for jobs and manage their applications.
 
-## Contributing
+Admin Panel: Admins can create, edit, and delete job listings, as well as view all applications.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Notifications: Users receive notifications when they apply for a job.
 
-## Code of Conduct
+Technology Stack
+Backend: Laravel
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Frontend: Blade Templating Engine, Tailwind CSS
 
-## Security Vulnerabilities
+Database: MySQL
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Testing: PHPUnit, Laravel Dusk
 
-## License
+Installation
+1-Clone the Repository:
+composer install
+php artisan migrate --seed
+php artisan key:generate
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Admin Login
+{Domain/admin}
+email: admin@gmail.com
+password: password
+
+User Roles
+The application differentiates between user roles:
+
+Admin: Has full access to manage jobs and applications.
+
+User: Can browse jobs, apply for jobs, and manage their own applications.
+
+User Role Capabilities
+Admin:
+
+Create, edit, and delete job postings.
+
+View all job applications.
+
+Send notifications to users regarding job applications.
+
+User:
+
+Browse available jobs.
+
+Apply for jobs (with optional cover letter).
+
+View and manage their own applications.
+
+
+Testing
+This project includes feature tests to ensure critical functionality works as expected. To run the tests, use the following command:
+
+php artisan test
+Example Feature Tests
+Job Application Test: Tests if a user can apply for a job and if they cannot apply for the same job twice.
+
+Job Creation Test: Tests if an admin can create a job and that non-admin users cannot create jobs.

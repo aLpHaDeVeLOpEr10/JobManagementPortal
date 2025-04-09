@@ -12,8 +12,9 @@ class Job extends Model
         'title',
         'description',
         'company',
-        'expiry_date'
-        // You can add other fields here if needed
+        'expiry_date',
+        'location',
+        'type',
     ];
     public function scopeActive($query)
     {

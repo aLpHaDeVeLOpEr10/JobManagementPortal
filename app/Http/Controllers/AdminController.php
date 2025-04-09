@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\BulkEmailToApplicants;
 use Illuminate\Http\Request;
 use App\Models\Job;
 use App\Models\Application;
 use App\Models\User;
+use Illuminate\Support\Facades\Mail;
 
 class AdminController extends Controller
 {
@@ -42,5 +44,25 @@ class AdminController extends Controller
     {
         $users = User::where('role', 'user')->latest()->paginate(10);
         return view('admin.users.index', compact('users'));
+    }
+
+    public function sendBulkEmail(Request $request, Job $job)
+    {
+        $request->validate([
+            'subject' => 'required|string|max:255',
+            'message' => 'required|string',
+        ]);
+    
+        $applications = Application::where('job_id', $job->id)->with('user')->get();
+    
+        foreach ($applications as $application) {
+            if ($application->user && $application->user->email) {
+                Mail::to($application->user->email)->send(
+                    new BulkEmailToApplicants($request->subject, $request->message)
+                );
+            }
+        }
+    
+        return back()->with('success', 'Bulk email sent to all applicants!');
     }
 }
