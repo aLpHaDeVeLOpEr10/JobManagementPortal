@@ -44,3 +44,12 @@ The Job Management Portal is a web application built with **Laravel** that allow
    composer install
    php artisan migrate --seed
    php artisan key:generate
+
+   ## Admin Login
+
+- Access the admin panel at `{Domain}/admin` (e.g., `http://yourdomain.com/admin` or `http://localhost:8000/admin`).
+- **Default Admin Credentials:**
+    - **Email**: `admin@gmail.com`
+    - **Password**: `password`
+
+**Important:** It is highly recommended to change the default admin password after the initial setup for security reasons.
