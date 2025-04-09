@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminJobController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ApplicationController;
@@ -14,23 +15,19 @@ use Illuminate\Support\Facades\Route;
 |
 | Here is where you can register web routes for your application. These
 | routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
+| be assigned to the "web" middleware group. Make something great!\
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/', [JobController::class, 'dashboard'])->name('dashboard'); // Define this route
+Route::get('/jobs/{job}', [JobController::class, 'show'])->name('jobs.show');
+Route::get('/admin', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
+Route::post('/admin', [AdminAuthController::class, 'login']);
 
 // Job routes
 Route::middleware(['auth'])->group(function () {
-    Route::get('/jobs', [JobController::class, 'index'])->name('jobs.index');
-    Route::get('/jobs/{job}', [JobController::class, 'show'])->name('jobs.show');
-Route::post('/jobs/{job}/apply', [ApplicationController::class, 'apply'])->name('jobs.apply');
+    Route::get('/my-applications', [ApplicationController::class, 'myApplications'])->name('my.applications');
+    Route::post('/jobs/{job}/apply', [ApplicationController::class, 'apply'])->name('jobs.apply');
     Route::get('/jobs/create', [JobController::class, 'create'])->name('jobs.create'); // Route to create a new job
     Route::post('/jobs', [JobController::class, 'store'])->name('jobs.store'); // Route to store the new job
     Route::post('/jobs/{job}/apply', [ApplicationController::class, 'apply'])->name('jobs.apply');
@@ -38,7 +35,6 @@ Route::post('/jobs/{job}/apply', [ApplicationController::class, 'apply'])->name(
 
 // Application routes
 Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', [ApplicationController::class, 'dashboard'])->name('dashboard'); // Define this route
     Route::get('/applications/{application}/edit', [ApplicationController::class, 'edit'])->name('applications.edit');
     Route::put('/applications/{application}', [ApplicationController::class, 'update'])->name('applications.update');
     Route::delete('/applications/{application}', [ApplicationController::class, 'destroy'])->name('applications.destroy');
@@ -52,4 +48,4 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->group(function () {
     Route::get('/jobs/create', [AdminJobController::class, 'create'])->name('jobs.create');
     Route::post('/jobs', [AdminJobController::class, 'store'])->name('admin.jobs.store');
 });
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
