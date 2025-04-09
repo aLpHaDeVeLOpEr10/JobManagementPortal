@@ -8,17 +8,16 @@ use App\Models\Job;
 use App\Notifications\JobApplicationConfirmationNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class ApplicationController extends Controller
 {
-    public function apply(Request $request, Job $job)
+    public function apply(Request $request, Job $job): RedirectResponse
     {
-        // Validate the cover letter if provided
         $request->validate([
             'cover_letter' => 'nullable|string|max:5000',
         ]);
-    
-        // Check if the user has already applied for the job
         $existingApplication = Application::where('user_id', auth()->id())
             ->where('job_id', $job->id)
             ->first();
@@ -26,9 +25,7 @@ class ApplicationController extends Controller
         if ($existingApplication) {
             return redirect()->route('dashboard')->with('error', 'You have already applied for this job.');
         }
-    
-        // Create the application
-        Application::create([
+            Application::create([
             'user_id' => auth()->id(),
             'job_id' => $job->id,
             'cover_letter' => $request->cover_letter,
@@ -37,28 +34,25 @@ class ApplicationController extends Controller
     
         // Send notification to the user
         // auth()->user()->notify(new JobApplicationConfirmationNotification($job));
-    
-        // Redirect with success message
-        return redirect()->route('dashboard')->with('success', 'Application submitted successfully!');
+            return redirect()->route('dashboard')->with('success', 'Application submitted successfully!');
     }
     
 
-    public function myApplications()
+    public function myApplications(): View
     {
-        // Get applications for the logged-in user
         $applications = Application::where('user_id', auth()->id())
             ->with('job')
             ->latest()
             ->get();
         return view('jobs.myapplications', compact('applications'));
     }
-    public function edit($id)
+    public function edit($id): View
     {
         $application = Application::findOrFail($id);
         return view('applications.edit', compact('application'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): RedirectResponse
     {
         $application = Application::findOrFail($id);
         $application->update($request->validate([
@@ -68,7 +62,7 @@ class ApplicationController extends Controller
         return redirect()->route('dashboard')->with('success', 'Application updated successfully.');
     }
 
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         $application = Application::findOrFail($id);
         $application->delete();

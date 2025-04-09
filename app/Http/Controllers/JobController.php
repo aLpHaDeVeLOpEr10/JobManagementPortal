@@ -6,22 +6,18 @@ use App\Mail\JobApplied;
 use App\Models\Job;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-
+use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class JobController extends Controller
 {
 
-    public function dashboard(Request $request)
+    public function dashboard(Request $request): View | RedirectResponse
     {
-        // Redirect admins to the dashboard
         if (auth()->check() && auth()->user()->role === 'admin') {
             return redirect()->route('admin.dashboard');
         }
-
-        // Initialize the query for active jobs
-        $query = Job::active(); // Assuming you have an active scope defined
-
-        // Search functionality
+        $query = Job::active();
         if ($request->filled('search')) {
             $search = $request->input('search');
             $query->where(function ($q) use ($search) {
@@ -30,28 +26,24 @@ class JobController extends Controller
                     ->orWhere('location', 'like', "%{$search}%");
             });
         }
-
-        // Filter by job type
         if ($request->filled('type')) {
             $query->where('type', $request->input('type'));
         }
-
-        // Get the filtered jobs with pagination
         $jobs = $query->latest()->paginate(10);
 
         return view('jobs.index', compact('jobs'));
     }
-    public function create()
+    public function create(): View
     {
         return view('jobs.create');
     }
-    public function show($id)
+    public function show($id): View
     {
         $job = Job::findOrFail($id);
         return view('jobs.show', compact('job'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $request->validate([
             'title' => 'required',
@@ -63,7 +55,7 @@ class JobController extends Controller
         Job::create($request->all());
         return redirect()->route('jobs.index')->with('success', 'Job posted successfully!');
     }
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
         $job = Job::findOrFail($id);
         $job->delete();
@@ -71,19 +63,18 @@ class JobController extends Controller
         return redirect()->route('jobs.index')->with('success', 'Job deleted successfully!');
     }
 
-    public function showApplicants($id)
+    public function showApplicants($id): View
     {
         $job = Job::findOrFail($id);
-        $applicants = $job->applications()->with('user')->get(); // Get applicants with user info
-
+        $applicants = $job->applications()->with('user')->get(); 
         return view('jobs.applicants', compact('job', 'applicants'));
     }
-    public function edit(Job $job)
+    public function edit(Job $job): View
     {
         return view('admin.jobs.edit', compact('job'));
     }
 
-    public function update(Request $request, Job $job)
+    public function update(Request $request, Job $job): RedirectResponse
     {
         $request->validate([
             'title' => 'required|string|max:255',
@@ -96,7 +87,7 @@ class JobController extends Controller
         return redirect()->route('admin.jobs.index')->with('success', 'Job updated successfully.');
     }
 
-    public function sendEmailToApplicants($id)
+    public function sendEmailToApplicants($id): RedirectResponse
     {
         $job = Job::findOrFail($id);
         $applicants = $job->applications()->with('user')->get();

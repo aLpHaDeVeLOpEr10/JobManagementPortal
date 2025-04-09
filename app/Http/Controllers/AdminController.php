@@ -8,10 +8,11 @@ use App\Models\Job;
 use App\Models\Application;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\View\View;
 
 class AdminController extends Controller
 {
-    public function dashboard()
+    public function dashboard(): View
     {
         $jobCount = Job::count();
         $applicationCount = Application::count();
@@ -28,7 +29,7 @@ class AdminController extends Controller
         ));
     }
 
-    public function jobs()
+    public function jobs(): View
     {
         $jobs = Job::latest()->paginate(10);
         return view('admin.jobs.index', compact('jobs'));
@@ -40,7 +41,7 @@ class AdminController extends Controller
         return view('admin.applications.index', compact('applications'));
     }
 
-    public function users()
+    public function users(): View
     {
         $users = User::where('role', 'user')->latest()->paginate(10);
         return view('admin.users.index', compact('users'));

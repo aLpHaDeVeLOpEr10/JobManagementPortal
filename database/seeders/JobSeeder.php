@@ -26,7 +26,7 @@ class JobSeeder extends Seeder
             Job::create([
                 'title' => $job['title'],
                 'company' => $job['company'],
-                'location' => $job['location'], // Add this line
+                'location' => $job['location'],
                 'description' => 'This is a sample description for ' . $job['title'] . '.',
                 'expiry_date' => Carbon::now()->addDays(rand(5, 30)),
             ]);
