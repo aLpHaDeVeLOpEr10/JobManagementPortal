@@ -53,3 +53,11 @@ The Job Management Portal is a web application built with **Laravel** that allow
     - **Password**: `password`
 
 **Important:** It is highly recommended to change the default admin password after the initial setup for security reasons.
+
+## Testing
+
+This project includes feature tests to ensure critical functionality works as expected.
+
+- **Run Tests:**
+  ```bash
+  php artisan test
