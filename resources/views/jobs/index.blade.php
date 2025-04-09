@@ -11,11 +11,11 @@
     {{ session('success') }}
 </div>
 @endif
-@foreach(auth()->user()->notifications as $notification)
+{{-- @foreach(auth()->user()->notifications as $notification)
     <div class="bg-blue-100 border border-blue-400 text-blue-700 p-4 rounded mb-4">
-        {{ $notification->data['message'] }} {{-- Customize as needed --}}
+        {{ $notification->data['message'] }} 
     </div>
-@endforeach
+@endforeach --}}
 
 <div class="max-w-5xl mx-auto py-8">
     <h2 class="text-2xl font-bold mb-4">Available Jobs</h2>
