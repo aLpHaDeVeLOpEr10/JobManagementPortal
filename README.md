@@ -41,4 +41,6 @@ The Job Management Portal is a web application built with **Laravel** that allow
 1. **Clone the Repository:**
    ```bash
    git clone <repository_url>
-   cd <repository_directory>
+   composer install
+   php artisan migrate --seed
+   php artisan key:generate
